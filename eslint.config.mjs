@@ -1,6 +1,6 @@
-import { dirname } from "path";
 import { fileURLToPath } from "url";
 import { FlatCompat } from "@eslint/eslintrc";
+import { dirname } from "path";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,10 +22,16 @@ const eslintConfig = [
       "no-magic-numbers": "warn",
       "no-var": "warn",
       "no-useless-return": "error",
-      "sort-imports": "warn",
+      "no-unused-vars": [
+        "error",
+        { vars: "all", args: "after-used", ignoreRestSiblings: false },
+      ],
+      "unused-imports/no-unused-imports": "error",
+      "sort-imports": "error",
       "require-await": "error",
       "no-else-return": "warn",
       "no-use-before-define": "error",
+      "no-empty-object-type": "off",
     },
   },
 ];
