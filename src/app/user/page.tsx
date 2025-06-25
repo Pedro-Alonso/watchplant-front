@@ -5,36 +5,22 @@ import { UserDto } from "./user.types";
 import { apiService } from "@/services/api";
 import { useRouter } from "next/navigation";
 
-const MOCK_USER: UserDto = {
-  id: "1",
-  name: "John Doe",
-  email: "john.doe@example.com",
-  phone: "123-456-7890",
-  address: {
-    id: "1",
-    zipCode: "12345-678",
-    street: "Rua Exemplo",
-    number: "123",
-    neighborhood: "Bairro Exemplo",
-  },
-};
-
 export default function UserProfilePage() {
   const [user, setUser] = useState<UserDto | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
+    const token = localStorage.getItem("jwtToken");
     const userId = localStorage.getItem("userId");
     if (!userId) {
       setLoading(false);
-      // router.push("/login");
-      setUser(MOCK_USER);
+      router.push("/login");
       return;
     }
     apiService
       .get<UserDto>(`/user/${userId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
         setUser(res.data);
@@ -42,8 +28,7 @@ export default function UserProfilePage() {
       })
       .catch(() => {
         setLoading(false);
-        // router.push("/login");
-        setUser(MOCK_USER);
+        router.push("/login");
       });
   }, [router]);
 
