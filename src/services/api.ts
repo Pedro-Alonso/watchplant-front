@@ -12,6 +12,11 @@ export interface ApiResponse<T> {
   request?: unknown;
 }
 
+export interface ApiError {
+  message: string;
+  statusCode: number;
+}
+
 class ApiService {
   private client: AxiosInstance;
 

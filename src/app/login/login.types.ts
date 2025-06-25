@@ -7,3 +7,7 @@ export interface ILogin {
   passwordInputProps: InputProps;
   onLogin: () => Promise<void>;
 }
+
+export interface LoginResponse {
+  jwtToken: string;
+}

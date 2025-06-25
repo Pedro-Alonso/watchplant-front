@@ -1,26 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { ILogin } from "./login.types";
-// import { useApiWithLoader } from "@/services/api";
+import { ILogin, LoginResponse } from "./login.types";
+import jwt from "jsonwebtoken";
+import { ApiError, useApiWithLoader } from "@/services/api";
 import { useRouter } from "next/navigation";
 import { InputProps } from "@/components/input/input";
 
 export const useLogin = (): ILogin => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const httpClient = useApiWithLoader();
+  const httpClient = useApiWithLoader();
   const router = useRouter();
   const onLogin = async () => {
     try {
-      // const response = await httpClient.post("/auth/login", {
-      //   email,
-      //   password,
-      // });
-      // console.log("Login successful:", response.data);
+      const response = await httpClient.post<LoginResponse>("/auth/login", {
+        email,
+        password,
+      });
+      const token = response.data.jwtToken;
+      localStorage.setItem("jwtToken", token);
+      const decodedToken = jwt.decode(token);
+      const userId = decodedToken ? decodedToken.sub : null;
+      localStorage.setItem("userId", userId || "");
       router.push("/homepage");
-    } catch (error) {
-      console.error("Login failed:", error);
+    } catch (error: unknown) {
+      const apiError = error as ApiError;
+      console.error("Login failed:", apiError.message);
     }
   };
   const emailInputProps: InputProps = {
