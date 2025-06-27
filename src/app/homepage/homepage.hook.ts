@@ -3,15 +3,8 @@ import { useRouter } from "next/navigation";
 import { IHomepage, Plantation } from "./homepage.types";
 import { apiService } from "@/services/api";
 
-const MOCK_PLANTATIONS: Plantation[] = [
-  { id: "1", name: "Plantações de Maçã", sizeArea: 1500 },
-  { id: "2", name: "Plantações de Laranja", sizeArea: 2000 },
-  { id: "3", name: "Plantações de Uva", sizeArea: 1200 },
-];
-
 export const useHomepage = (): IHomepage => {
-  const [plantations, setPlantations] =
-    useState<Plantation[]>(MOCK_PLANTATIONS);
+  const [plantations, setPlantations] = useState<Plantation[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -19,7 +12,7 @@ export const useHomepage = (): IHomepage => {
     apiService
       .get<Plantation[]>("/user/plantations", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
         },
       })
       .then((res) => {
@@ -27,8 +20,8 @@ export const useHomepage = (): IHomepage => {
         setLoading(false);
       })
       .catch(() => {
+        console.error("Failed to fetch plantations");
         setLoading(false);
-        // Optionally redirect to login on error
       });
   }, []);
 

@@ -1,27 +1,41 @@
-// Plantation DTO (matches backend CreatePlantationResponseDto, GetPlantationResponseDto, etc.)
 export interface PlantationDto {
-  id: string;
   name: string;
   sizeArea: number;
-  soilType: string;
-  sunlightIncidence: string;
 }
 
-// PlantedPlant DTO (matches backend CreatePlantResponseDto, GetPlantResponseDto, etc.)
 export interface PlantedPlantDto {
-  id: string;
+  perenualId: string;
   scientificName: string;
   commonName: string;
   quantity: number;
-  plantationName?: string;
+  plantationName: string;
+  plantationDate: string;
 }
 
-// Hook return type for plantation details page
+export interface PlantDetailsDto {
+  perenualId: string;
+  scientificName: string;
+  commonName: string;
+  careLevel?: string;
+  cycle?: string;
+  maxFeetHeight?: string;
+  pruningMonth?: string[];
+  quantity?: number;
+  soilType?: string;
+  sunlightIncidence?: string;
+  wateringFrequency?: string;
+  plantationDate?: string;
+}
+
 export interface PlantationDetailsHook {
   plantation: PlantationDto | null;
   plants: PlantedPlantDto[];
   loading: boolean;
   selectedPlant: PlantedPlantDto | null;
+  plantDetails: PlantDetailsDto | null;
   handleBack: () => void;
   handleSelectPlant: (plant: PlantedPlantDto) => void;
+  fetchPlantDetails: (
+    plant: PlantedPlantDto
+  ) => Promise<PlantDetailsDto | null>;
 }

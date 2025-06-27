@@ -1,8 +1,11 @@
+import { SoilTypeEnum } from "@/common/soil-type-enum";
+import { SunlightIncidenceEnum } from "@/common/sunlight-incidente-enum";
+
 export interface PlantationCreateFormState {
   name: string;
   sizeArea: string;
-  soilType: string;
-  sunlightIncidence: string;
+  soilType: SoilTypeEnum | "";
+  sunlightIncidence: SunlightIncidenceEnum | "";
 }
 
 export interface IPlantationCreate {

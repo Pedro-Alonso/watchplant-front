@@ -6,6 +6,7 @@ export default function PlantationDetailsLayout({
   plants,
   loading,
   selectedPlant,
+  plantDetails,
   handleBack,
   handleSelectPlant,
 }: PlantationDetailsHook) {
@@ -39,6 +40,13 @@ export default function PlantationDetailsLayout({
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white p-8 rounded-2xl shadow-xl w-full max-w-md flex flex-col items-center gap-6">
+          <button
+            className="self-start mb-4 px-3 py-1 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+            onClick={handleBack}
+          >
+            Voltar
+          </button>
+
           <h2 className="text-green-700 text-2xl font-bold mb-2">
             Detalhes da Planta
           </h2>
@@ -60,6 +68,68 @@ export default function PlantationDetailsLayout({
                 <span className="font-semibold">Plantação:</span>{" "}
                 {selectedPlant.plantationName}
               </div>
+            )}
+
+            {plantDetails && (
+              <>
+                {plantDetails.careLevel && (
+                  <div className="mt-4">
+                    <span className="font-semibold">Nível de cuidado:</span>{" "}
+                    <p className="mt-1">{plantDetails.careLevel}</p>
+                  </div>
+                )}
+                {plantDetails.cycle && (
+                  <div className="mt-2">
+                    <span className="font-semibold">Ciclo:</span>{" "}
+                    <p className="mt-1">{plantDetails.cycle}</p>
+                  </div>
+                )}
+                {plantDetails.maxFeetHeight && (
+                  <div className="mt-2">
+                    <span className="font-semibold">Altura máxima:</span>{" "}
+                    <p className="mt-1">{plantDetails.maxFeetHeight}</p>
+                  </div>
+                )}
+                {plantDetails.pruningMonth &&
+                  plantDetails.pruningMonth.length > 0 && (
+                    <div className="mt-2">
+                      <span className="font-semibold">Meses de poda:</span>{" "}
+                      <p className="mt-1">
+                        {plantDetails.pruningMonth.join(", ")}
+                      </p>
+                    </div>
+                  )}
+                {plantDetails.soilType && (
+                  <div className="mt-2">
+                    <span className="font-semibold">Tipo de solo:</span>{" "}
+                    <p className="mt-1">{plantDetails.soilType}</p>
+                  </div>
+                )}
+                {plantDetails.sunlightIncidence && (
+                  <div className="mt-2">
+                    <span className="font-semibold">
+                      Incidência de luz solar:
+                    </span>{" "}
+                    <p className="mt-1">{plantDetails.sunlightIncidence}</p>
+                  </div>
+                )}
+                {plantDetails.wateringFrequency && (
+                  <div className="mt-2">
+                    <span className="font-semibold">Frequência de rega:</span>{" "}
+                    <p className="mt-1">{plantDetails.wateringFrequency}</p>
+                  </div>
+                )}
+                {plantDetails.plantationDate && (
+                  <div className="mt-2">
+                    <span className="font-semibold">Data de plantio:</span>{" "}
+                    <p className="mt-1">
+                      {new Date(
+                        plantDetails.plantationDate
+                      ).toLocaleDateString()}
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -91,7 +161,7 @@ export default function PlantationDetailsLayout({
           )}
           {plants.map((plant) => (
             <li
-              key={plant.id}
+              key={plant.perenualId}
               className="flex items-center justify-between border-b py-2 cursor-pointer hover:bg-gray-100"
               onClick={() => handleSelectPlant(plant)}
             >
@@ -109,7 +179,7 @@ export default function PlantationDetailsLayout({
           <button
             className="px-4 py-2 bg-green-700 text-white rounded hover:bg-green-800"
             onClick={() =>
-              router.push(`/plantation/${plantation.id}/add-plant`)
+              router.push(`/plantation/${plantation.name}/add-plant`)
             }
           >
             Adicionar Planta

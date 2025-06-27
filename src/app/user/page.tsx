@@ -19,7 +19,7 @@ export default function UserProfilePage() {
       return;
     }
     apiService
-      .get<UserDto>(`/user/${userId}`, {
+      .get<UserDto>(`/user/me`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {

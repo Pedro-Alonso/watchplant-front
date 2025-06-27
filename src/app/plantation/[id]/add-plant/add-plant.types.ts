@@ -1,3 +1,6 @@
+import { SoilTypeEnum } from "@/common/soil-type-enum";
+import { SunlightIncidenceEnum } from "@/common/sunlight-incidente-enum";
+
 export interface PlantSearchResultDto {
   id: number;
   commonName: string;
@@ -17,22 +20,25 @@ export interface PlantSearchRequest {
   hardiness?: string;
 }
 
+export interface AddPlantFormState {
+  plantId: string;
+  quantity: string;
+  wateringFrequency: string;
+  sunlightIncidence: SunlightIncidenceEnum | "";
+  soilType: SoilTypeEnum | "";
+}
+
 export interface IAddPlant {
-  form: {
-    plantId: string;
-    quantity: string;
-    wateringFrequency: string;
-    sunlightIncidence: string;
-    soilType: string;
-  };
+  form: AddPlantFormState;
   searchQuery: string;
+  setSearchQuery: (query: string) => void;
   searchResults: PlantSearchResultDto[];
   loading: boolean;
   searching: boolean;
   error: string;
   success: boolean;
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: string | number } }
   ) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   handleSearch: () => Promise<void>;

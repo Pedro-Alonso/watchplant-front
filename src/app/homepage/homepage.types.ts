@@ -1,5 +1,4 @@
 export interface Plantation {
-  id: string;
   name: string;
   sizeArea: number;
 }

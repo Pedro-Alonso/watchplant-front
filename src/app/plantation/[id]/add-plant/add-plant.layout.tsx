@@ -1,6 +1,9 @@
 "use client";
 import { useRouter, useParams } from "next/navigation";
 import { IAddPlant, PlantSearchResultDto } from "./add-plant.types";
+import { SoilTypeEnum } from "@/common/soil-type-enum";
+import { SunlightIncidenceEnum } from "@/common/sunlight-incidente-enum";
+
 const WATERING_OPTIONS = [
   { value: "DAILY", label: "Diariamente" },
   { value: "EVERY_OTHER_DAY", label: "A cada dois dias" },
@@ -9,16 +12,21 @@ const WATERING_OPTIONS = [
 ];
 
 const SUNLIGHT_OPTIONS = [
-  { value: "FULL_SUN", label: "Sol pleno" },
-  { value: "PARTIAL_SHADE", label: "Sombra parcial" },
-  { value: "SHADE", label: "Sombra total" },
+  { value: SunlightIncidenceEnum.FULL_SUN, label: "Sol pleno" },
+  { value: SunlightIncidenceEnum.PART_SHADE, label: "Meia sombra" },
+  { value: SunlightIncidenceEnum.FULL_SHADE, label: "Sombra" },
+  { value: SunlightIncidenceEnum.SUN_PART_SHADE, label: "Sol parcial" },
+  { value: SunlightIncidenceEnum.PART_SUN_PART_SHADE, label: "Sol/sombra parcial" },
 ];
 
 const SOIL_TYPES = [
-  { value: "SANDY", label: "Arenoso" },
-  { value: "CLAY", label: "Argiloso" },
-  { value: "LOAMY", label: "Franco" },
-  { value: "PEATY", label: "Turfoso" },
+  { value: SoilTypeEnum.SAND, label: "Arenoso" },
+  { value: SoilTypeEnum.CLAY, label: "Argiloso" },
+  { value: SoilTypeEnum.LOAM, label: "Franco" },
+  { value: SoilTypeEnum.PEAT, label: "Turfoso" },
+  { value: SoilTypeEnum.HUMUS_ENRICHED, label: "Húmus enriquecido" },
+  { value: SoilTypeEnum.SILT, label: "Siltoso" },
+  { value: SoilTypeEnum.CHALK, label: "Calcário" },
 ];
 
 export const AddPlantLayout = ({
@@ -69,11 +77,11 @@ export const AddPlantLayout = ({
               <li
                 key={plant.id}
                 className={`cursor-pointer py-1 px-2 hover:bg-green-100 rounded ${
-                  form.plantId == plant.id ? "bg-green-200" : ""
+                  Number(form.plantId) === plant.id ? "bg-green-200" : ""
                 }`}
                 onClick={() =>
                   handleChange({
-                    target: { name: "plantId", value: plant.id },
+                    target: { name: "plantId", value: plant.id.toString() },
                   })
                 }
               >

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { apiService } from "../../../../services/api";
-import { PlantSearchResultDto, PlantSearchRequest } from "./add-plant.types";
+import { PlantSearchResultDto, PlantSearchRequest, AddPlantFormState } from "./add-plant.types";
 import { IAddPlant } from "./add-plant.types";
 
-const initialForm = {
+const initialForm: AddPlantFormState = {
   plantId: "",
   quantity: "",
   wateringFrequency: "",
@@ -13,22 +13,22 @@ const initialForm = {
 };
 
 export const useAddPlant = (): IAddPlant => {
-  const [form, setForm] = useState({ ...initialForm });
+  const [form, setForm] = useState<AddPlantFormState>({ ...initialForm });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<PlantSearchResultDto[]>(
-    []
-  );
+  const [searchResults, setSearchResults] = useState<PlantSearchResultDto[]>([]);
   const [searching, setSearching] = useState(false);
   const router = useRouter();
   const params = useParams();
   const plantationId = params?.id as string;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: string | number } }
+  ) => {
     const { name, value } = e.target;
-    setForm((prev: typeof initialForm) => ({
+    setForm((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -49,23 +49,39 @@ export const useAddPlant = (): IAddPlant => {
       setError("Todos os campos são obrigatórios.");
       return;
     }
+    
     setLoading(true);
     try {
-      await apiService.post("/plant/", {
-        plantId: Number(form.plantId),
-        plantation: {
-          id: plantationId,
-          name: "",
+      // Use safe localStorage access for server-side rendering
+      const getToken = () => {
+        if (typeof window !== 'undefined') {
+          return localStorage.getItem("token");
+        }
+        return null;
+      };
+      
+      await apiService.post(
+        "/plant/", 
+        {
+          plantId: Number(form.plantId),
+          plantation: {
+            id: plantationId,
+            name: "",
+          },
+          quantity: Number(form.quantity),
+          wateringFrequency: form.wateringFrequency,
+          sunlightIncidence: Number(form.sunlightIncidence),
+          soilType: Number(form.soilType),
         },
-        quantity: Number(form.quantity),
-        wateringFrequency: form.wateringFrequency,
-        sunlightIncidence: form.sunlightIncidence,
-        soilType: form.soilType,
-      });
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
       setSuccess(true);
       setForm({ ...initialForm });
       setTimeout(() => router.push(`/plantation/${plantationId}`), 1200);
-    } catch {
+    } catch (err) {
+      console.error("Error adding plant:", err);
       setError("Erro ao adicionar planta. Tente novamente.");
     } finally {
       setLoading(false);
@@ -73,14 +89,25 @@ export const useAddPlant = (): IAddPlant => {
   };
 
   const handleSearch = async () => {
+    if (!searchQuery.trim()) return;
+    
     setSearching(true);
     setError("");
     try {
+      // Use safe localStorage access for server-side rendering
+      const getToken = () => {
+        if (typeof window !== 'undefined') {
+          return localStorage.getItem("token");
+        }
+        return null;
+      };
+      
       const params: PlantSearchRequest = { q: searchQuery };
       const res = await apiService.get<{ data: unknown[] }>("/plant/search", {
         params,
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Bearer ${getToken()}` },
       });
+      
       setSearchResults(
         (res.data?.data || []).map((p) => {
           const plant = p as {
@@ -95,7 +122,8 @@ export const useAddPlant = (): IAddPlant => {
           };
         })
       );
-    } catch {
+    } catch (err) {
+      console.error("Error searching plants:", err);
       setSearchResults([]);
       setError("Erro ao buscar plantas.");
     } finally {

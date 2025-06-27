@@ -1,20 +1,22 @@
+import { SoilTypeEnum } from "@/common/soil-type-enum";
 import { IPlantationCreate } from "./plantation-create.types";
 import { useRouter } from "next/navigation";
+import { SunlightIncidenceEnum } from "@/common/sunlight-incidente-enum";
 
 const SOIL_TYPES = [
-  { value: "SANDY", label: "Arenoso" },
-  { value: "CLAY", label: "Argiloso" },
-  { value: "SILT", label: "Siltoso" },
-  { value: "PEATY", label: "Turfoso" },
-  { value: "SALINE", label: "Salino" },
-  { value: "CHALKY", label: "Calcário" },
-  { value: "LOAMY", label: "Humoso" },
+  { value: SoilTypeEnum.SAND, label: "Arenoso" },
+  { value: SoilTypeEnum.CLAY, label: "Argiloso" },
+  { value: SoilTypeEnum.SILT, label: "Siltoso" },
+  { value: SoilTypeEnum.PEAT, label: "Turfoso" },
+  { value: SoilTypeEnum.HUMUS_ENRICHED, label: "Salino" },
+  { value: SoilTypeEnum.CHALK, label: "Calcário" },
+  { value: SoilTypeEnum.LOAM, label: "Humoso" },
 ];
 
 const SUNLIGHTS = [
-  { value: "FULL_SUN", label: "Sol pleno" },
-  { value: "PARTIAL_SHADE", label: "Meia sombra" },
-  { value: "SHADE", label: "Sombra" },
+  { value: SunlightIncidenceEnum.FULL_SUN, label: "Sol pleno" },
+  { value: SunlightIncidenceEnum.PART_SHADE, label: "Meia sombra" },
+  { value: SunlightIncidenceEnum.FULL_SHADE, label: "Sombra" },
 ];
 
 export const PlantationCreateLayout = ({

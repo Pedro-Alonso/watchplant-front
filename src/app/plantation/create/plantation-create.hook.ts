@@ -5,7 +5,9 @@ import {
   IPlantationCreate,
   PlantationCreateFormState,
 } from "./plantation-create.types";
-// import { apiService } from "@/services/api";
+import { apiService } from "@/services/api";
+import { SoilTypeEnum } from "@/common/soil-type-enum";
+import { SunlightIncidenceEnum } from "@/common/sunlight-incidente-enum";
 
 const initialForm: PlantationCreateFormState = {
   name: "",
@@ -43,12 +45,12 @@ export const usePlantationCreate = (): IPlantationCreate => {
     }
     setLoading(true);
     try {
-      //   await apiService.post("/plantation/", {
-      //     name: form.name,
-      //     sizeArea: Number(form.sizeArea),
-      //     soilType: form.soilType,
-      //     sunlightIncidence: form.sunlightIncidence,
-      //   });
+      await apiService.post("/plantation/", {
+        name: form.name,
+        sizeArea: Number(form.sizeArea),
+        soilType: SoilTypeEnum[form.soilType],
+        sunlightIncidence: SunlightIncidenceEnum[form.sunlightIncidence],
+      });
       setSuccess(true);
       setForm(initialForm);
       setTimeout(() => router.push("/homepage"), 1200);
