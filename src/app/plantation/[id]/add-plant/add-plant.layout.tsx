@@ -16,7 +16,10 @@ const SUNLIGHT_OPTIONS = [
   { value: SunlightIncidenceEnum.PART_SHADE, label: "Meia sombra" },
   { value: SunlightIncidenceEnum.FULL_SHADE, label: "Sombra" },
   { value: SunlightIncidenceEnum.SUN_PART_SHADE, label: "Sol parcial" },
-  { value: SunlightIncidenceEnum.PART_SUN_PART_SHADE, label: "Sol/sombra parcial" },
+  {
+    value: SunlightIncidenceEnum.PART_SUN_PART_SHADE,
+    label: "Sol/sombra parcial",
+  },
 ];
 
 const SOIL_TYPES = [

@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { apiService } from "../../../../services/api";
-import { PlantSearchResultDto, PlantSearchRequest, AddPlantFormState } from "./add-plant.types";
+import {
+  PlantSearchResultDto,
+  PlantSearchRequest,
+  AddPlantFormState,
+} from "./add-plant.types";
 import { IAddPlant } from "./add-plant.types";
 
 const initialForm: AddPlantFormState = {
@@ -18,14 +22,18 @@ export const useAddPlant = (): IAddPlant => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<PlantSearchResultDto[]>([]);
+  const [searchResults, setSearchResults] = useState<PlantSearchResultDto[]>(
+    []
+  );
   const [searching, setSearching] = useState(false);
   const router = useRouter();
   const params = useParams();
   const plantationId = params?.id as string;
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: string | number } }
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+      | { target: { name: string; value: string | number } }
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -49,19 +57,19 @@ export const useAddPlant = (): IAddPlant => {
       setError("Todos os campos são obrigatórios.");
       return;
     }
-    
+
     setLoading(true);
     try {
       // Use safe localStorage access for server-side rendering
       const getToken = () => {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           return localStorage.getItem("token");
         }
         return null;
       };
-      
+
       await apiService.post(
-        "/plant/", 
+        "/plant/",
         {
           plantId: Number(form.plantId),
           plantation: {
@@ -90,24 +98,24 @@ export const useAddPlant = (): IAddPlant => {
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) return;
-    
+
     setSearching(true);
     setError("");
     try {
       // Use safe localStorage access for server-side rendering
       const getToken = () => {
-        if (typeof window !== 'undefined') {
+        if (typeof window !== "undefined") {
           return localStorage.getItem("token");
         }
         return null;
       };
-      
+
       const params: PlantSearchRequest = { q: searchQuery };
       const res = await apiService.get<{ data: unknown[] }>("/plant/search", {
         params,
         headers: { Authorization: `Bearer ${getToken()}` },
       });
-      
+
       setSearchResults(
         (res.data?.data || []).map((p) => {
           const plant = p as {

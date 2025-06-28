@@ -38,7 +38,9 @@ export interface IAddPlant {
   error: string;
   success: boolean;
   handleChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | { target: { name: string; value: string | number } }
+    e:
+      | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+      | { target: { name: string; value: string | number } }
   ) => void;
   handleSubmit: (e: React.FormEvent) => Promise<void>;
   handleSearch: () => Promise<void>;
