@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  AddressDto,
-  UpdateUserResponseDto,
-  UserDto,
-} from "@/app/user/user.types";
+import { AddressDto, UserDto } from "@/app/user/user.types";
 
 interface EditUserModalProps {
   isOpen: boolean;
