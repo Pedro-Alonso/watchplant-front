@@ -4,6 +4,7 @@ export interface InputProps {
   type?: string;
   placeholder?: string;
   value?: string;
+  name?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onFocus?: (event: React.FocusEvent<HTMLInputElement>) => void;
@@ -15,6 +16,7 @@ const Input = ({
   type = "text",
   placeholder = "",
   value = "",
+  name,
   onChange,
   onBlur,
   onFocus,
@@ -27,6 +29,7 @@ const Input = ({
       type={type}
       placeholder={placeholder}
       value={value}
+      name={name}
       onChange={onChange}
       onBlur={onBlur}
       onFocus={onFocus}

@@ -1,6 +1,8 @@
 export interface PlantationDto {
   name: string;
   sizeArea: number;
+  soilType?: string;
+  sunlightIncidence?: string;
 }
 
 export interface PlantedPlantDto {
@@ -10,6 +12,23 @@ export interface PlantedPlantDto {
   quantity: number;
   plantationName: string;
   plantationDate: string;
+  soilType?: string;
+  sunlightIncidence?: string;
+  wateringFrequency?: string;
+}
+
+// New types for update operations
+export interface UpdatePlantationDto {
+  sizeArea?: number;
+  soilType?: string;
+  sunlightIncidence?: string;
+}
+
+export interface UpdatePlantDto {
+  quantity?: number;
+  soilType?: string;
+  sunlightIncidence?: string;
+  wateringFrequency?: string;
 }
 
 export interface PlantDetailsDto {
@@ -38,4 +57,23 @@ export interface PlantationDetailsHook {
   fetchPlantDetails: (
     plant: PlantedPlantDto
   ) => Promise<PlantDetailsDto | null>;
+
+  // New functionality
+  handleDeletePlantation: () => void;
+  handleEditPlantation: (data: UpdatePlantationDto) => Promise<boolean>;
+  handleDeletePlant: (plant: PlantedPlantDto) => Promise<boolean>;
+  handleEditPlant: (
+    plant: PlantedPlantDto,
+    data: UpdatePlantDto
+  ) => Promise<boolean>;
+  isEditing: boolean;
+  isDeleting: boolean;
+  showDeleteModal: boolean;
+  setShowDeleteModal: (show: boolean) => void;
+  showEditPlantationModal: boolean;
+  setShowEditPlantationModal: (show: boolean) => void;
+  showEditPlantModal: boolean;
+  setShowEditPlantModal: (show: boolean) => void;
+  plantToEdit: PlantedPlantDto | null;
+  setPlantToEdit: (plant: PlantedPlantDto | null) => void;
 }

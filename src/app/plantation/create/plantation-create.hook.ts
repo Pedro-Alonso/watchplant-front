@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   IPlantationCreate,
@@ -23,6 +23,9 @@ export const usePlantationCreate = (): IPlantationCreate => {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Store router in a ref to avoid dependency issues
+  const routerRef = useRef(router);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
@@ -45,7 +48,7 @@ export const usePlantationCreate = (): IPlantationCreate => {
     }
     setLoading(true);
     try {
-      await apiService.post("/plantation/", {
+      await apiService.post("/plantation", {
         name: form.name,
         sizeArea: Number(form.sizeArea),
         soilType: SoilTypeEnum[form.soilType],
@@ -53,7 +56,7 @@ export const usePlantationCreate = (): IPlantationCreate => {
       });
       setSuccess(true);
       setForm(initialForm);
-      setTimeout(() => router.push("/homepage"), 1200);
+      setTimeout(() => routerRef.current.push("/homepage"), 1200);
     } catch {
       setError("Erro ao criar plantação. Tente novamente.");
     } finally {

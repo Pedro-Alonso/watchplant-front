@@ -7,6 +7,7 @@ import LoaderModal from "@/components/loader/LoaderModal";
 export const LoginLayout = ({
   email,
   password,
+  errorMessage,
   emailInputProps,
   passwordInputProps,
   onLogin,
@@ -23,6 +24,11 @@ export const LoginLayout = ({
           <h2 className="text-3xl font-semibold text-center text-gray-800">
             Bem-vindo ao Watchplant
           </h2>
+          {errorMessage && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative">
+              <span className="block sm:inline">{errorMessage}</span>
+            </div>
+          )}
           <form className="flex flex-col gap-4">
             <Input {...emailInputProps} />
             <Input {...passwordInputProps} />

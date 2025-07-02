@@ -1,12 +1,9 @@
 export interface ISignup {
-  step: number;
   form: FormState;
-  currentStep: (typeof STEPS)[number];
-  currentValue: string;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleNext: () => Promise<void>;
-  handleBack: () => void;
-  steps: typeof STEPS;
+  onSignup: (e: React.FormEvent) => Promise<void>;
+  error: string | null;
+  fieldErrors: Record<string, string>;
 }
 
 export const STEPS = [
@@ -14,49 +11,55 @@ export const STEPS = [
     label: "Email",
     name: "email",
     type: "email",
-    placeholder: "Enter your email",
+    placeholder: "Digite seu e-mail",
   },
   {
-    label: "Name",
+    label: "Nome",
     name: "name",
     type: "text",
-    placeholder: "Enter your name",
+    placeholder: "Digite seu nome completo",
   },
   {
-    label: "Phone",
+    label: "Telefone",
     name: "phone",
     type: "tel",
-    placeholder: "Enter your phone",
+    placeholder: "Digite seu telefone",
   },
   {
-    label: "Password",
+    label: "Senha",
     name: "password",
     type: "password",
-    placeholder: "Create a password",
+    placeholder: "Crie uma senha",
   },
   {
-    label: "Zip Code",
+    label: "Confirmar Senha",
+    name: "confirmPassword",
+    type: "password",
+    placeholder: "Confirme sua senha",
+  },
+  {
+    label: "CEP",
     name: "zipCode",
     type: "text",
-    placeholder: "Enter your zip code",
+    placeholder: "Digite seu CEP",
   },
   {
-    label: "Street",
+    label: "Rua",
     name: "street",
     type: "text",
-    placeholder: "Enter your street",
+    placeholder: "Digite sua rua",
   },
   {
-    label: "Number",
+    label: "Número",
     name: "number",
     type: "text",
-    placeholder: "Enter your house/building number",
+    placeholder: "Digite o número da residência",
   },
   {
-    label: "Neighborhood",
+    label: "Bairro",
     name: "neighborhood",
     type: "text",
-    placeholder: "Enter your neighborhood",
+    placeholder: "Digite seu bairro",
   },
 ];
 

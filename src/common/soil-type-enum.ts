@@ -1,9 +1,9 @@
 export enum SoilTypeEnum {
-  CLAY,
-  LOAM,
-  PEAT,
-  HUMUS_ENRICHED,
-  SAND,
-  SILT,
-  CHALK,
+  CLAY = "CLAY",
+  LOAM = "LOAM",
+  PEAT = "PEAT",
+  HUMUS_ENRICHED = "HUMUS_ENRICHED",
+  SAND = "SAND",
+  SILT = "SILT",
+  CHALK = "CHALK",
 }
